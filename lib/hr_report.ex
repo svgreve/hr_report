@@ -2,7 +2,7 @@ defmodule HrReport do
 
   alias HrReport.Parser
 
-  @options [ "hours_by_person", "hours_by_year"]
+  @options [ "all_hours", "hours_per_year"]
 
   def build(filename) do
     list_of_names = get_list_of_names(filename)
@@ -37,26 +37,23 @@ defmodule HrReport do
 
   def fetch_higher_value(_report, _option), do: {:error, "Invalid option!"}
 
-  defp sum_values([name, hours, _day, _month, year], %{"hours_by_person" => hours_by_person, "hours_by_year" => hours_by_year} = report) do
-    hours_by_person = Map.put(hours_by_person, name, hours_by_person[name] + hours)
-    hours_by_year = Map.put(hours_by_year, year, hours_by_year[year] + hours)
+  defp sum_values([name, hours, _day, _month, year], %{"all_hours" => all_hours, "hours_per_year" => hours_per_year} = report) do
+    all_hours = Map.put(all_hours, name, all_hours[name] + hours)
+    hours_per_year = Map.put(hours_per_year, year, hours_per_year[year] + hours)
 
     # report
-    # |> Map.put("hours_by_person", hours_by_person)
-    # |> Map.put("hours_by_year", hours_by_year)
+    # |> Map.put("all_hours", all_hours)
+    # |> Map.put("hours_per_year", hours_per_year)
 
-    %{report | "hours_by_person" => hours_by_person, "hours_by_year" => hours_by_year}
+    %{report | "all_hours" => all_hours, "hours_per_year" => hours_per_year}
 
   end
 
-  # defp report_acc do
-  #   Enum.into(2016..2020, %{}, fn year -> {Integer.to_string(year), 0} end)
-  # end
 
   defp report_acc(list_of_names, list_of_years) do
-    hours_by_person = Enum.into(list_of_names, %{}, fn person -> {person, 0} end)
-    hours_by_year = Enum.into(list_of_years, %{}, fn year -> {year, 0} end)
-    %{"hours_by_person" => hours_by_person, "hours_by_year" => hours_by_year}
+    all_hours = Enum.into(list_of_names, %{}, fn person -> {person, 0} end)
+    hours_per_year = Enum.into(list_of_years, %{}, fn year -> {year, 0} end)
+    %{"all_hours" => all_hours, "hours_per_year" => hours_per_year}
   end
 
 
