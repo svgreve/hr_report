@@ -1,7 +1,7 @@
 defmodule HrReport do
   alias HrReport.Parser
 
-  @options ["all_hours", "all_hours_per_year"]
+  @options [:all_hours, :all_hours_per_year]
   @months %{
     "1" => :janeiro,
     "2" => :fevereiro,
