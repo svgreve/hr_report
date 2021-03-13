@@ -58,9 +58,9 @@ defmodule HrReport do
   defp sum_values(
          [name, hours, _day, month, year],
          %{
-           "all_hours" => all_hours,
-           "all_hours_per_year" => all_hours_per_year,
-           "hours_per_year" => hours_per_year,
+           :all_hours => all_hours,
+           :all_hours_per_year => all_hours_per_year,
+           :hours_per_year => hours_per_year,
            :hours_per_month => hours_per_month
          } = report
        ) do
@@ -79,9 +79,9 @@ defmodule HrReport do
     hours_per_month = Map.put(hours_per_month, name, hours_per_person)
 
     report
-    |> Map.put("all_hours", all_hours)
-    |> Map.put("all_hours_per_year", all_hours_per_year)
-    |> Map.put("hours_per_year", hours_per_year)
+    |> Map.put(:all_hours, all_hours)
+    |> Map.put(:all_hours_per_year, all_hours_per_year)
+    |> Map.put(:hours_per_year, hours_per_year)
     |> Map.put(:hours_per_month, hours_per_month)
 
     # %{report | "all_hours" => all_hours, "all_hours_per_year" => all_hours_per_year}
@@ -102,9 +102,9 @@ defmodule HrReport do
       end)
 
     %{
-      "all_hours" => all_hours,
-      "all_hours_per_year" => all_hours_per_year,
-      "hours_per_year" => hours_per_year,
+      :all_hours => all_hours,
+      :all_hours_per_year => all_hours_per_year,
+      :hours_per_year => hours_per_year,
       :hours_per_month => hours_per_month
     }
   end
