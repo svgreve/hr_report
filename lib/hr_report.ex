@@ -84,7 +84,6 @@ defmodule HrReport do
     |> Map.put(:hours_per_year, hours_per_year)
     |> Map.put(:hours_per_month, hours_per_month)
 
-    # %{report | "all_hours" => all_hours, "all_hours_per_year" => all_hours_per_year}
   end
 
   def report_acc(list_of_names, list_of_years) do
