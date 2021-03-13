@@ -28,7 +28,7 @@ defmodule HrReport do
     list_of_years = get_list_of_years(filename)
     # IO.inspect(list_of_years)
     accumulator = report_acc(list_of_names, list_of_years)
-    IO.inspect(accumulator)
+    # IO.inspect(accumulator)
 
     filename
     |> Parser.parse_file()
