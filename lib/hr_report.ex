@@ -35,14 +35,14 @@ defmodule HrReport do
     |> Enum.reduce(accumulator, fn line, report -> sum_values(line, report) end)
   end
 
-  def get_list_of_names(filename) do
+  defp get_list_of_names(filename) do
     filename
     |> Parser.parse_file()
     |> Enum.uniq_by(fn [name, _hours, _day, _month, _year] -> name end)
     |> Enum.map(fn [name, _hours, _day, _month, _year] -> name end)
   end
 
-  def get_list_of_years(filename) do
+  defp get_list_of_years(filename) do
     filename
     |> Parser.parse_file()
     |> Enum.uniq_by(fn [_name, _hours, _day, _month, year] -> year end)
