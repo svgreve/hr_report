@@ -2,6 +2,25 @@ defmodule HrReport do
   alias HrReport.Parser
 
   @options ["all_hours", "all_hours_per_year"]
+  @months %{
+    "1" => :janeiro,
+    "2" => :fevereiro,
+    "3" => :março,
+    "4" => :abril,
+    "5" => :maio,
+    "6" => :junho,
+    "7" => :julho,
+    "8" => :agosto,
+    "9" => :setembro,
+    "10" => :outubro,
+    "11" => :novembro,
+    "12" => :dezembro
+  }
+
+  defp month_name(month) do
+    @months[month]
+  end
+
 
   def build(filename) do
     list_of_names = get_list_of_names(filename)
@@ -10,6 +29,7 @@ defmodule HrReport do
     # IO.inspect(list_of_years)
     accumulator = report_acc(list_of_names, list_of_years)
     IO.inspect(accumulator)
+
     filename
     |> Parser.parse_file()
     |> Enum.reduce(accumulator, fn line, report -> sum_values(line, report) end)
@@ -41,28 +61,28 @@ defmodule HrReport do
            "all_hours" => all_hours,
            "all_hours_per_year" => all_hours_per_year,
            "hours_per_year" => hours_per_year,
-           "hours_per_month" => hours_per_month
+           :hours_per_month => hours_per_month
          } = report
        ) do
-
     all_hours = Map.put(all_hours, name, all_hours[name] + hours)
 
     all_hours_per_year = Map.put(all_hours_per_year, year, all_hours_per_year[year] + hours)
 
-    hours_per_person = hours_per_year[name] #only one individual - all years
+    # only one individual - all years
+    hours_per_person = hours_per_year[name]
     hours_per_person = Map.put(hours_per_person, year, hours_per_person[year] + hours)
     hours_per_year = Map.put(hours_per_year, name, hours_per_person)
 
-    hours_per_person = hours_per_month[name] #only one individual - all month
-    hours_per_person = Map.put(hours_per_person, month, hours_per_person[month] + hours)
+    # only one individual - all months
+    hours_per_person = hours_per_month[name]
+    hours_per_person = Map.put(hours_per_person, month_name(month), hours_per_person[month_name(month)] + hours)
     hours_per_month = Map.put(hours_per_month, name, hours_per_person)
-
 
     report
     |> Map.put("all_hours", all_hours)
     |> Map.put("all_hours_per_year", all_hours_per_year)
     |> Map.put("hours_per_year", hours_per_year)
-    |> Map.put("hours_per_month", hours_per_month)
+    |> Map.put(:hours_per_month, hours_per_month)
 
     # %{report | "all_hours" => all_hours, "all_hours_per_year" => all_hours_per_year}
   end
@@ -76,16 +96,16 @@ defmodule HrReport do
         {name, Enum.into(list_of_years, %{}, fn year -> {year, 0} end)}
       end)
 
-      hours_per_month =
-        Enum.into(list_of_names, %{}, fn month ->
-          {month, Enum.into(1..12, %{}, fn month -> {Integer.to_string(month), 0} end)}
-        end)
+    hours_per_month =
+      Enum.into(list_of_names, %{}, fn month ->
+        {month, Enum.into(1..12, %{}, fn month -> {month_name(Integer.to_string(month)), 0} end)}
+      end)
 
     %{
       "all_hours" => all_hours,
       "all_hours_per_year" => all_hours_per_year,
       "hours_per_year" => hours_per_year,
-      "hours_per_month" => hours_per_month
+      :hours_per_month => hours_per_month
     }
   end
 end
