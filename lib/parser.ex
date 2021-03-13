@@ -1,7 +1,7 @@
 defmodule HrReport.Parser do
 
 
-  def parse_file(filename) do
+  defp parse_file(filename) do
     "reports/#{filename}"
     |> File.stream!()
     |> Stream.map(fn line -> parse_line(line) end)
