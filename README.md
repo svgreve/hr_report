@@ -1,6 +1,6 @@
 # HrReport
 
-**TODO: Add description**
+Nesse desafio, você deverá gerar um relatório a partir de um arquivo .csv.
 
 ## Installation
 
